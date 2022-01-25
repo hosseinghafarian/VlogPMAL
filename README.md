@@ -1,1 +1,1 @@
-This repo have been made to present the algorithm in the submitted manuscript: local variational probabilistic minimax active learning. To run, one must prepare appropriate inputs to the function as described in comments in the code. 
+This repo have been made to present the algorithm in the submitted manuscript: local variational probabilistic minimax active learning. To run, please prepare appropriate inputs to the function as described in comments in the code. 
