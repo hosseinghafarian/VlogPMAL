@@ -1,11 +1,22 @@
-function [query_id] = vari_logis_PMAL(trainsamples, initL, samples_to_query_from, K, lambda, learningparams, alparams) 
-
-   ytrain = trainsamples.Y; 
+function [query_id] = vari_logis_PMAL(data, initL, samples_to_query_from, K, lambda, learningparams, alparams) 
+%% 
+% Inputs: 
+% data: is a struct for training samples, it must have an index set of data
+% which will be referenced in function get_indices. 
+% initL: indices of labeled instances
+% samples_to_query_from: list of indices of unlabeled data, 
+% K: the kernel matrix for the training samples both labeled and unlabeled
+% lambda: a paremeter for some algorithms, usu for regualrization, unused
+% learningparams: parameters of learning algorithms
+% alparams: parameters of active learning algorithms
+% Output(s):
+% indices of query_id 
+   ytrain = data.Y; 
    alphavar = alparams{1};
    
    n = size(K, 1);
       
-   [n_l, Lindex, Uindex, Lind, Uind] = get_indices( trainsamples, samples_to_query_from, initL);
+   [n_l, Lindex, Uindex, Lind, Uind] = get_indices( data, samples_to_query_from, initL);
    y_Lindex   = ytrain(Lindex);
    assert(n==numel(Lindex), 'wrong number of instances in vari_logic_PMAL');
    
@@ -17,8 +28,8 @@ function [query_id] = vari_logis_PMAL(trainsamples, initL, samples_to_query_from
    
    [queryind] = vlog_PMAL( Lind, Uind, y_Lindex, alphavar );
    
-   query_id                                   = get_ID_fromind(trainsamples, queryind);
-   assert(ismember(query_id, trainsamples.F_id), 'Error: query_id is not in the distributions ID in learning data');
+   query_id                                   = get_ID_fromind(data, queryind);
+   assert(ismember(query_id, data.F_id), 'Error: query_id is not in the distributions ID in learning data');
 
 
    function [queryind] = vlog_PMAL(Lind, Uind, y_Lindex, alphavar )
